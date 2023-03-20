@@ -1,0 +1,3 @@
+4.5
+Comparison of pre-trained models
+We show comparisons of different pre-trained models in Fig. 23, 24, 25.

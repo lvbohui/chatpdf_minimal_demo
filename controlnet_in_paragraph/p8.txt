@@ -1,0 +1,109 @@
+3.1
+ControlNet
+ControlNet manipulates the input conditions of neural network blocks so as to further control the
+overall behavior of an entire neural network. Herein, a "network block" refers to a set of neural
+layers that are put together as a frequently used unit to build neural networks, e.g., “resnet” block,
+“conv-bn-relu” block, multi-head attention block, transformer block, etc.
+Using 2D feature as an example, given a feature map x ∈ R h×w×c with {h, w, c} being height,
+width, and channel numbers, a neural network block F(·; Θ) with a set of parameters Θ transforms x
+into another feature map y with
+y = F(x; Θ)
+(1)
+and this procedure is visualized in Fig. 2-(a).
+We lock all parameters in Θ and then clone it into a trainable copy Θ c . The copied Θ c is trained with
+an external condition vector c. In this paper, we call the original and new parameters “locked copy”
+and “trainable copy”. The motivation of making such copies rather than directly training the original
+weights is to avoid overfitting when dataset is small and to preserve the production-ready quality of
+large models learned from billions of images.
+The neural network blocks are connected by an unique type of convolution layer called “zero
+convolution”, i.e., 1 × 1 convolution layer with both weight and bias initialized with zeros. We denote
+the zero convolution operation as Z(·; ·) and use two instances of parameters {Θ z1 , Θ z2 } to compose
+the ControlNet structure with
+y c = F(x; Θ) + Z(F(x + Z(c; Θ z1 ); Θ c ); Θ z2 )
+(2)
+where y c becomes the output of this neural network block, as visualized in Fig. 2-(b).
+Because both the weight and bias of a zero convolution layer are initialized as zeros, in the first
+training step, we have
+
+ Z(c; Θ z1 ) = 0
+F(x + Z(c; Θ z1 ); Θ c ) = F(x; Θ c ) = F(x; Θ)
+(3)
+
+Z(F(x + Z(c; Θ z1 ); Θ c ); Θ z2 ) = Z(F(x; Θ c ); Θ z2 ) = 0
+and this can be converted to
+y c = y
+(4)
+and Eq-(2,3,4) indicate that, in the first training step, all the inputs and outputs of both the trainable and
+locked copy of neural network blocks are consistent with what they would be as if the ControlNet does
+not exist. In other words, when a ControlNet is applied to some neural network blocks, before any
+optimization, it will not cause any influence to the deep neural features. The capability, functionality,
+and result quality of any neural network block is perfectly preserved, and any further optimization
+will become as fast as fine tuning (compared to train those layers from scratch).
+We briefly deduce the gradient calculation of a zero convolution layer. Considering an 1 × 1
+convolution layer with weight W and bias B, at any spatial position p and channel-wise index i,
+given an input map I ∈ R h×w×c , the forward pass can be written as
+Z(I; {W , B}) p,i = B i +
+c
+X
+I p,i W i,j
+(5)
+j
+and since zero convolution has W = 0 and B = 0 (before optimization), for anywhere with I p,i
+being non-zero, the gradients become
+
+∂Z(I; {W , B}) p,i
+
+
+=1
+
+
+∂B i
+
+
+
+c
+
+X
+ ∂Z(I; {W , B}) p,i
+=
+W i,j = 0
+(6)
+∂I p,i
+
+
+j
+
+
+
+
+∂Z(I; {W , B}) p,i
+
+
+= I p,i 6 = 0
+
+∂W i,j
+and we can see that although a zero convolution can cause the gradient on the feature term I to
+become zero, the weight’s and bias’s gradients are not influenced. As long as the feature I is non-zero,
+the weight W will be optimized into non-zero matrix in the first gradient descent iteration. Notably,
+in our case, the feature term is input data or condition vectors sampled from datasets, which naturally
+ensures non-zero I. For example, considering a classic gradient descent with an overall loss function
+L and a learning rate β lr 6 = 0, if the “outside” gradient ∂L/∂Z(I; {W , B}) is not zero, we will have
+∂L
+∂Z(I; {W , B})
+= 0
+(7)
+∂Z(I; {W , B})
+∂W
+where W ∗ is the weight after one gradient descent step; is Hadamard product. After this step, we
+will have
+c
+X
+∂Z(I; {W ∗ , B}) p,i
+∗
+=
+W i,j
+= 0
+(8)
+where non-zero gradients are obtained and the neural network begins to learn. In this way, the
+zero convolutions become an unique type of connection layer that progressively grow from zeros to
+optimized parameters in a learned way.

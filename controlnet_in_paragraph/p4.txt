@@ -1,0 +1,9 @@
+2.3
+Text-to-Image Diffusion
+Diffusion models can be applied to text-to-image generating tasks to achieve state-of-the-art image
+generating results. This is often achieved by encoding text inputs into latent vectors using pretrained
+language models like CLIP [41]. For instances, Glide [38] is a text-guided diffusion models supporting
+both image generating and editing. Disco Diffusion is a clip-guided implementation of [9] to process
+text prompts. Stable Diffusion is a large scale implementation of latent diffusion [44] to achieve
+text-to-image generation. Imagen [49] is a text-to-image structure that does not use latent images and
+directly diffuse pixels using a pyramid structure.

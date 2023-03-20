@@ -1,0 +1,9 @@
+4.3
+Ablation Study
+Fig. 20 shows a comparison to a model trained without using ControlNet. That model is trained
+with exactly same method with Stability’s Depth-to-Image model (Adding a channel to the SD and
+continue the training).
+Fig. 21 shows the training process. We would like to point out a “sudden convergence phenomenon”
+where the model suddenly be able to follow the input conditions. This can happen during the training
+process from 5000 to 10000 steps when using 1e-5 as the learning rate.
+Fig. 22 shows Canny-edge-based ControlNets trained with different dataset scales.

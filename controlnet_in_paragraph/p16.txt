@@ -1,0 +1,9 @@
+4.4
+Comparison to previous methods
+Fig. 14 shows the comparison to Stability’s Depth-to-Image model.
+Fig. 17 shows a comparison to PITI [59].
+Fig. 18 shows a comparison to sketch-guided diffusion [58].
+Fig. 19 shows a comparison to Taming transformer [11].
+94.5
+Comparison of pre-trained models
+We show comparisons of different pre-trained models in Fig. 23, 24, 25.

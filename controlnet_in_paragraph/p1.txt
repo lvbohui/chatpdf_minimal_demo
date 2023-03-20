@@ -1,0 +1,43 @@
+With the presence of large text-to-image models, generating a visually appealing image may require
+only a short descriptive prompt entered by users. After typing some texts and getting the images, we
+may naturally come up with several questions: does this prompt-based control satisfy our needs? For
+example in image processing, considering many long-standing tasks with clear problem formulations,
+can these large models be applied to facilitate these specific tasks? What kind of framework should
+we build to handle the wide range of problem conditions and user controls? In specific tasks, can
+large models preserve the advantages and capabilities obtained from billions of images?
+To answer these questions, we investigate various image processing applications and have three
+findings. First, the available data scale in a task-specific domain is not always as large as that in
+the general image-text domain. The largest dataset size of many specific problems (e.g., object
+shape/normal, pose understanding, etc.) is often under 100k, i.e., 5 × 10 4 times smaller than LAION-
+5B. This would require robust neural network training method to avoid overfitting and to preserve
+generalization ability when the large models are trained for specific problems.
+Second, when image processing tasks are handled with data-driven solutions, large computation
+clusters are not always available. This makes fast training methods important for optimizing large
+models to specific tasks within an acceptable amount of time and memory space (e.g., on personal
+devices). This would further require the utilization of pretrained weights, as well as fine-tuning
+strategies or transfer learning.
+Third, various image processing problems have diverse forms of problem definitions, user controls,
+or image annotations. When addressing these problems, although an image diffusion algorithm can
+be regulated in a “procedural” way, e.g., constraining denoising process, editing multi-head attention
+activations, etc., the behaviors of these hand-crafted rules are fundamentally prescribed by human
+directives. Considering some specific tasks like depth-to-image, pose-to-human, etc., these problems
+essentially require the interpretation of raw inputs into object-level or scene-level understandings,
+making hand-crafted procedural methods less feasible. To achieve learned solutions in many tasks,
+the end-to-end learning is indispensable.
+This paper presents ControlNet, an end-to-end neural network architecture that controls large image
+diffusion models (like Stable Diffusion) to learn task-specific input conditions. The ControlNet clones
+the weights of a large diffusion model into a "trainable copy" and a "locked copy": the locked copy
+preserves the network capability learned from billions of images, while the trainable copy is trained
+on task-specific datasets to learn the conditional control. The trainable and locked neural network
+blocks are connected with an unique type of convolution layer called "zero convolution", where the
+convolution weights progressively grow from zeros to optimized parameters in a learned manner.
+Since the production-ready weights are preserved, the training is robust at datasets of different scale.
+Since the zero convolution does not add new noise to deep features, the training is as fast as fine
+tuning a diffusion model, compared to training new layers from scratch.
+We train several ControlNets with various datasets of different conditions, e.g., Canny edges, Hough
+lines, user scribbles, human key points, segmentation maps, shape normals, depths, etc. We also
+experiment ControlNets with both small datasets (with samples less than 50k or even 1k) and
+large datasets (millions of samples). We also show that in some tasks like depth-to-image, training
+ControlNets on a personal computer (one Nvidia RTX 3090TI) can achieve competitive results
+to commercial models trained on large computation clusters with terabytes of GPU memory and
+thousands of GPU hours.

@@ -1,0 +1,8 @@
+4.6
+More Applications
+Fig. 16 show that if the diffusion process is masked, the models can be used in pen-based image
+editing.
+Fig. 26 show that when object is relatively simple, the model can achieve relatively accurate control
+of the details.
+Fig. 27 shows that when ControlNet is only applied to 50% diffusion iterations, users can get results
+that do not follow the input shapes.

@@ -1,0 +1,18 @@
+2.5
+Image-to-Image Translation
+We would like to point out that, although the ControlNet and image-to-image translation may have
+several overlapped applications, their motivations are essentially different. Image-to-image translation
+is targeted to learn a mapping between images in different domains, while a ControlNet is targeted to
+control a diffusion model with task-specific conditions.
+Pix2Pix [20] presented the concept of image-to-image translation, and early methods are dominated
+by conditional generative neural networks [20, 69, 60, 39, 8, 63, 68]. After transformers and Vision
+Transformers (ViTs) gained popularity, successful results have been reported using autoregressive
+methods [42, 11, 7]. Some researches also show that multi-model methods can learn a robust
+generator from various translation tasks [64, 29, 19, 40].
+We discuss the current strongest methods in image-to-image translation. Taming Transformer [11]
+is a vision transformer with the capability to both generate images and perform image-to-image
+translations. Palette [48] is an unified diffusion-based image-to-image translation framework. PITI
+[59] is a diffusion-based image-to-image translation method that utilizes large-scale pretraining as a
+way to improve the quality of generated results. In specific fields like sketch-guided diffusion, [58] is
+a optimization-based method that manipulates the diffusion process. These methods are tested in the
+experiments.

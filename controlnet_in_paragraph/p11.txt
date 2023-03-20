@@ -1,0 +1,20 @@
+3.4
+Improved Training
+We discuss several strategies to improve the training of ControlNets, especially in extreme cases when
+the computation device is very limited (e.g., on a laptop) or very powerful (e.g., on a computation
+cluster with large-scale GPUs available). In our experiments, if any of these strategies are used, we
+will mention in the experimental settings.
+Small-Scale Training When computation device is limited, we find that partially breaking the
+connection between a ControlNet and the Stable Diffusion can accelerate convergence. By default,
+we connect the ControlNet to “SD Middle Block” and “SD Decoder Block 1,2,3,4” as shown in
+Fig. 3. We find that disconnecting the link to decoder 1,2,3,4 and only connecting the middle block
+can improve the training speed by about a factor of 1.6 (tested on RTX 3070TI laptop GPU). When
+the model shows reasonable association between results and conditions, those disconnected links can
+be connected again in a continued training to facilitate accurate control.
+Large-Scale Training Herein, the large-scale training refers to the situation where both powerful
+computation clusters (at least 8 Nvidia A100 80G or equivalent) and large dataset (at least 1 million
+of training image pairs) are available. This usually applies to tasks where data is easily available, e.g.,
+edge maps detected by Canny. In this case, since the risk of over-fitting is relatively low, we can first
+train ControlNets for a large enough number of iterations (usually more than 50k steps), and then
+unlock all weights of the Stable Diffusion and jointly train the entire model as a whole. This would
+lead to a more problem-specific model.

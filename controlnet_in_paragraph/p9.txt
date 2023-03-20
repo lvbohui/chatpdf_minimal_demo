@@ -1,0 +1,31 @@
+3.2
+ControlNet in Image Diffusion Model
+We use the Stable Diffusion [44] as an example to introduce the method to use ControlNet to control
+a large diffusion model with task-specific conditions.
+Stable Diffusion is a large text-to-image diffusion model trained on billions of images. The model
+is essentially an U-net with an encoder, a middle block, and a skip-connected decoder. Both the
+encoder and decoder have 12 blocks, and the full model has 25 blocks (including the middle block).
+In those blocks, 8 blocks are down-sampling or up-sampling convolution layers, 17 blocks are main
+blocks that each contains four resnet layers and two Vision Transformers (ViTs). Each Vit contains
+several cross-attention and/or self-attention mechanisms. The texts are encoded by OpenAI CLIP,
+and diffusion time steps are encoded by positional encoding.
+Stable Diffusion uses a pre-processing method similar to VQ-GAN [11] to convert the entire dataset
+of 512 × 512 images into smaller 64 × 64 “latent images” for stabilized training. This requires
+ControlNets to convert image-based conditions to 64 × 64 feature space to match the convolution
+size. We use a tiny network E(·) of four convolution layers with 4 × 4 kernels and 2 × 2 strides
+(activated by ReLU, channels are 16, 32, 64, 128, initialized with Gaussian weights, trained jointly
+with the full model) to encode image-space conditions c i into feature maps with
+c f = E(c i )
+(9)where c f is the converted feature map. This network convert 512 × 512 image conditions to 64 × 64
+feature maps.
+As shown in Fig. 3, we use ControlNet to control each level of the U-net. Note that the way we
+connect the ControlNet is computationally efficient: since the original weights are locked, no gradient
+computation on the original encoder is needed for training. This can speed up training and save GPU
+memory, as half of the gradient computation on the original model can be avoided. Training a stable
+diffusion model with ControlNet requires only about 23% more GPU memory and 34% more time in
+each training iteration (as tested on a single Nvidia A100 PCIE 40G).
+To be specific, we use ControlNet to create the trainable copy of the 12 encoding blocks and 1 middle
+block of Stable Diffusion. The 12 blocks are in 4 resolutions (64 × 64, 32 × 32, 16 × 16, 8 × 8) with
+each having 3 blocks. The outputs are added to the 12 skip-connections and 1 middle block of the
+U-net. Since SD is a typical U-net structure, this ControlNet architecture is likely to be usable in
+other diffusion models.

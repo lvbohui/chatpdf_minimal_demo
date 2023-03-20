@@ -1,0 +1,16 @@
+4
+4.1
+Experiment
+Experimental Settings
+All results in this paper is achieved with CFG-scale at 9.0. The sampler is DDIM. We use 20 steps by
+default. We use three types of prompts to test the models:
+(1) No prompt: We use empty string “” as prompt.
+(2) Default prompt: Since Stable diffusion is essentially trained with prompts, the empty string might
+be an unexpected input for the model, and SD tends to generate random texture maps if no prompt
+is provided. A better setting is to use meaningless prompts like “an image”, “a nice image”, “a
+professional image”, etc. In our setting, we use “a professional, detailed, high-quality image” as
+default prompt.
+(3) Automatic prompt: In order to test the state-of-the-art maximized quality of a fully automatic
+pipeline, we also try to use automatic image captioning methods (e.g., BLIP [34]) to generate prompts
+using the results obtained by “default prompt” mode. We use the generated prompt to diffusion again.
+(4) User prompt: Users give the prompts.

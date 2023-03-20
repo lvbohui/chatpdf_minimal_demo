@@ -1,0 +1,18 @@
+2.1
+HyperNetwork and Neural Network Structure
+HyperNetwork originates from a neural language processing method [14] to train a small recurrent
+neural network to influence the weights of a larger one. Successful results of HyperNetwork are
+also reported in image generation using generative adversarial networks [1, 10] and other machine
+learning tasks [51]. Inspired by these ideas, [15] provided a method to attach a smaller neural network
+to Stable Diffusion [44] so as to change the artistic style of its output images. This approach gained
+more popularity after [28] provided the pretrained weights of several HyperNetworks. ControlNet
+and HyperNetwork have similarities in the way they influence the behaviors of neural networks.
+ControlNet uses a special type of convolution layer called “zero convolution”. Early neural network
+studies [31, 47, 32] have extensively discussed the initialization of network weights, including the
+rationality of initializing the weights with Gaussian distributions and the risks that may incur by
+initializing the weights with zeros. More recently, [37] discussed a method to scale the initial weight
+of several convolution layers in a diffusion model to improve the training, which shares similarity with
+the idea of zero convolution (and their codes contain a function called “zero_module”). Manipulating
+the initial convolution weights is also discussed in ProGAN [21] and StyleGAN [22], as well as
+Noise2Noise [33] and [65]. Stability’s model cards [55] also mention the use of zero weights in
+neural layers.

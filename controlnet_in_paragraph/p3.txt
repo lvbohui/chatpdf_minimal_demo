@@ -1,0 +1,12 @@
+2.2
+Diffusion Probabilistic Model
+Diffusion probabilistic model was proposed in [52]. Successful results of image generation are first
+reported at small scale [25] and then relatively large scale [9]. This architecture was improved by
+important training and sampling methods like Denoising Diffusion Probabilistic Model (DDPM) [17],
+Denoising Diffusion Implicit Model (DDIM) [53], and score-based diffusion [54]. Image diffusion
+methods can directly use pixel colors as training data, and in that case, researches often consider
+strategies to save computation powers when handling high-resolution images [53, 50, 26], or directly
+use pyramid-based or multiple-stage methods [18, 43]. These methods essentially use U-net [45] as
+their neural network architecture. In order to reduce the computation power required for training a
+diffusion model, based on the idea of latent image [11], the approach Latent Diffusion Model (LDM)
+[44] was proposed and further extended to Stable Diffusion.

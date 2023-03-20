@@ -1,0 +1,22 @@
+3.3
+Training
+Image diffusion models learn to progressively denoise images to generate samples. The denoising
+can happen in pixel space or a “latent” space encoded from training data. Stable Diffusion uses latent
+images as the training domain. In this context, the terminology “image”, ”pixel”, and “denoising” all
+refers to corresponding concepts in the “perceptual latent space” [44].
+Given an image z 0 , diffusion algorithms progressively add noise to the image and produces a noisy
+image z t , with t being how many times the noise is added. When t is large enough, the image
+approximates pure noise. Given a set of conditions including time step t, text prompts c t , as well as a
+task-specific conditions c f , image diffusion algorithms learn a network  θ to predict the noise added
+to the noisy image z t with
+h
+i
+L = E z 0 ,t,c t ,c f ,∼N (0,1) k −  θ (z t , t, c t , c f ))k 22
+(10)
+where L is the overall learning objective of the entire diffusion model. This learning objective can be
+directly used in fine tuning diffusion models.
+During the training, we randomly replace 50% text prompts c t with empty strings. This facilitates
+ControlNet’s capability to recognize semantic contents from input condition maps, e.g., Canny edge
+maps or human scribbles, etc. This is mainly because when the prompt is not visible for the SD
+model, the encoder tends to learn more semantics from input control maps as a replacement for the
+prompt.

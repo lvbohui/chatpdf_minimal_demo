@@ -1,0 +1,57 @@
+3.5
+Implementation
+We present several implementations of ControlNets with different image-based conditions to control
+large diffusion models in various ways.
+Canny Edge We use Canny edge detector [5] (with random thresholds) to obtain 3M edge-image-
+caption pairs from the internet. The model is trained with 600 GPU-hours with Nvidia A100 80G.
+The base model is Stable Diffusion 1.5. (See also Fig. 4.)
+Canny Edge (Alter) We rank the image resolutions of the above Canny edge dataset and sampled
+several sub-set with 1k, 10k, 50k, 500k samples. We use the same experimental setting to test the
+effect of dataset scale. (See also Fig. 22.)
+Hough Line We use a learning-based deep Hough transform [13] to detect straight lines from
+Places2 [66], and then use BLIP [34] to generate captions. We obtain 600k edge-image-caption pairs.
+We use the above Canny model as a starting checkpoint and train the model with 150 GPU-hours
+with Nvidia A100 80G. (See also Fig. 5.)
+HED Boundary We use HED boundary detection [62] to obtain 3M edge-image-caption pairs
+from internet. The model is trained with 300 GPU-hours with Nvidia A100 80G. The base model is
+Stable Diffusion 1.5. (See also Fig. 7.)
+User Sketching We synthesize human scribbles from images using a combination of HED boundary
+detection [62] and a set of strong data augmentations (random thresholds, randomly masking out a
+random percentage of scribbles, random morphological transformations, and random non-maximum
+suppression). We obtain 500k scribble-image-caption pairs from internet. We use the above Canny
+model as a starting checkpoint and train the model with 150 GPU-hours with Nvidia A100 80G. Note
+that we also tried a more “human-like” synthesizing method [57] but the method is much slower than
+a simple HED and we do not notice visible improvements. (See also Fig. 6.)
+Human Pose (Openpifpaf) We use learning-based pose estimation method [27] to “find” humans
+from internet using a simple rule: an image with human must have at least 30% of the key points
+of the whole body detected. We obtain 80k pose-image-caption pairs. Note that we directly use
+visualized pose images with human skeletons as training condition. The model is trained with 400
+GPU-hours on Nvidia RTX 3090TI. The base model is Stable Diffusion 2.1. (See also Fig. 8.)
+Human Pose (Openpose) We use learning-based pose estimation method [6] to find humans from
+internet using the same rule in the above Openpifpaf setting. We obtain 200k pose-image-caption
+pairs. Note that we directly use visualized pose images with human skeletons as training condition.
+The model is trained with 300 GPU-hours with Nvidia A100 80G. Other settings are same with the
+above Openpifpaf. (See also Fig. 9.)
+Semantic Segmentation (COCO) The COCO-Stuff dataset [4] captioned by BLIP [34]. We obtain
+164K segmentation-image-caption pairs. The model is trained with 400 GPU-hours on Nvidia RTX
+3090TI. The base model is Stable Diffusion 1.5. (See also Fig. 12.)
+Semantic Segmentation (ADE20K) The ADE20K dataset [67] captioned by BLIP [34]. We
+obtain 164K segmentation-image-caption pairs. The model is trained with 200 GPU-hours on Nvidia
+A100 80G. The base model is Stable Diffusion 1.5. (See also Fig. 11.)
+Depth (large-scale) We use the Midas [30] to obtain 3M depth-image-caption pairs from internet.
+The model is trained with 500 GPU-hours with Nvidia A100 80G. The base model is Stable Diffusion
+1.5. (See also Fig. 23,24,25.)
+Depth (small-scale) We rank the image resolutions of the above depth dataset to sample a subset
+of 200k pairs. This set is used in experimenting the minimal required dataset size to train the model.
+(See also Fig. 14.)
+8Normal Maps The DIODE dataset [56] captioned by BLIP [34]. We obtain 25,452 normal-image-
+caption pairs. The model is trained with 100 GPU-hours on Nvidia A100 80G. The base model is
+Stable Diffusion 1.5. (See also Fig. 13.)
+Normal Maps (extended) We use the Midas [30] to compute depth map and then perform normal-
+from-distance to achieve “coarse” normal maps. We use the above Normal model as a starting
+checkpoint and train the model with 200 GPU-hours with Nvidia A100 80G. (See also Fig. 23,24,25.)
+Cartoon Line Drawing We use a cartoon line drawing extracting method [61] to extract line
+drawings from cartoon illustration from internet. By sorting the cartoon images with popularity, we
+obtain the top 1M lineart-cartoon-caption pairs. The model is trained with 300 GPU-hours with
+Nvidia A100 80G. The base model is Waifu Diffusion (an interesting community-developed variation
+model from stable diffusion [36]). (See also Fig. 15.)

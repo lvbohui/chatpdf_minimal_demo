@@ -1,0 +1,9 @@
+3 Method
+ControlNet is a neural network architecture that can enhance pretrained image diffusion models
+with task-specific conditions. We introduce ControlNet’s essential structure and motivate of each
+part in Section 3.1. We detail the method to apply ControlNets to image diffusion models using the
+example of Stable Diffusion in Section 3.2. We elaborate the learning objective and general training
+method in Section 3.3, and then describe several approaches to improve the training in extreme
+cases such as training with one single laptop or using large-scale computing clusters in Section 3.4.
+Finally, we include the details of several ControlNet implementations with different input conditions
+in Section 3.5.

@@ -1,0 +1,10 @@
+2.4
+Personalization,Customization, and Control of Pretrained Diffusion Model
+Because state-of-the-art image diffusion models are dominated by text-to-image methods, the most
+straight-forward ways to enhance the control over a diffusion model are often text-guided [38, 24,
+2, 3, 23, 43, 16]. This type of control can also be achieved by manipulating CLIP features [43].
+The image diffusion process by itself can provide some functionalities to achieve color-level detail
+variations [35] (the community of Stable Diffusion call it img2img). Image diffusion algorithms
+naturally supports inpainting as an important way to control the results [43, 2]. Textual Inversion
+[12] and DreamBooth [46] are proposed to customize (or personalize) the contents in the generated
+results using a small set of images with same topics or objects.
